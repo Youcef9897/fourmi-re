@@ -3,8 +3,9 @@
 
 #include "structures.h"
 
+// Déclaration des fonctions
 void definirClimat(Climat *climat);
+void afficherClimat(const Climat *climat);
 void avancerJour(Climat *climat);
-void afficherClimat(Climat *climat);
 
 #endif // CLIMAT_H
