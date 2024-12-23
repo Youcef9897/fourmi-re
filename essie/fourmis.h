@@ -3,16 +3,17 @@
 
 #include "structures.h"
 
-void initialiserFourmi(Fourmi *fourmi, TypeFourmi type, int age, int pv);
-void genererColonie(Fourmi *colonie, int *tailleColonie);
-void afficherFourmi(Fourmi fourmi);
-void mettreAJourStatut(Fourmi *f);
+// Déclaration des fonctions
 void gererLesMortsEtVieillirFourmis(Fourmi *colonie, int *tailleColonie, Climat *temps, GestionNonAdultes *nonAdultes);
+void genererColonie(Fourmi *colonie, int *tailleColonie);
+void initialiserFourmi(Fourmi *fourmi, TypeFourmi type, int age, int pv);
+void afficherFourmi(Fourmi fourmi);
 TypeFourmi assignerRoleAdulte();
 const char* roleToString(TypeFourmi type);
-void compterTypesFourmis(Fourmi colonie[], int taille);
-void initialiserZones(); 
+void mettreAJourStatut(Fourmi *f);
 void affecterActivite(ZoneFourmiliere zone, const char *description);
 void afficherUneZone(ZoneFourmiliere zone);
+void compterTypesFourmis(Fourmi colonie[], int taille);
+void initialiserZones();
 
 #endif // FOURMIS_H
