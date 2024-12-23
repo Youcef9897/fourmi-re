@@ -4,9 +4,9 @@
 #include "structures.h"
 
 // Prototypes des fonctions utilisées dans ce fichier
-Typei assignerRoleAdulte();
-const char* roleToString(Typei type);
-void afficherUneZone(Zoneiliere zone);
+TypeFourmi assignerRoleAdulte();
+const char* roleToString(TypeFourmi type);
+void afficherUneZone(ZoneFourmiliere zone);
 
 
 // Déclaration globale pour les zones
@@ -14,95 +14,95 @@ void afficherUneZone(Zoneiliere zone);
 static char zonesDescriptions[NB_ZONES][200]; // Tableau pour stocker les descriptions des zones
 
 // Fonction pour initialiser une i adulte
-void initialiseri(i *i, Typei type, int age, int pv) {
-    i->type = type;
-    i->age = age;
+#define NB_ZONES 7
+static char zonesDescriptions[NB_ZONES][200]; // Tableau pour stocker les descriptions des zones
+
+// Fonction pour initialiser une fourmi adulte
+void initialiserFourmi(Fourmi *fourmi, TypeFourmi type, int age, int pv) {
+    fourmi->type = type;
+    fourmi->age = age;
 
     // Définir les PV en fonction du type
     switch (type) {
         case REINE:
-            i->pv = 300;
+            fourmi->pv = 300;
             break;
         case MALE:
-            i->pv = 100;
+            fourmi->pv = 100;
             break;
         case SOLDAT:
         case ARCHITECTES:
         case NETTOYEUSES:
         case BOUTINEUSES:
         case NOURRICE:
-            i->pv = 120;
+            fourmi->pv = 120;
             break;
         default:
-            i->pv = pv;
+            fourmi->pv = pv;
     }
 
     // Statut : 3 = adulte, 4 = mort
-    i->statut = (age < 10) ? 0 : 3;
+    fourmi->statut = (age < 10) ? 0 : 3;
 }
 
-
 // Fonction pour générer une colonie prédéfinie
-// Fonction pour générer une colonie prédéfinie (adultes uniquement)
-void genererColonie(i *colonie, int *tailleColonie) {
+void genererColonie(Fourmi *colonie, int *tailleColonie) {
     int index = 0;
 
     // La reine
-    initialiseri(&colonie[index++], REINE, 300, 300);
+    initialiserFourmi(&colonie[index++], REINE, 300, 300);
 
     // Butineuses
     for (int i = 0; i < 20; i++) {
-        initialiseri(&colonie[index++], BOUTINEUSES, 30 + (rand() % 70), 120);
+        initialiserFourmi(&colonie[index++], BOUTINEUSES, 30 + (rand() % 70), 120);
     }
 
     // Soldats
     for (int i = 0; i < 10; i++) {
-        initialiseri(&colonie[index++], SOLDAT, 30 + (rand() % 70), 120);
+        initialiserFourmi(&colonie[index++], SOLDAT, 30 + (rand() % 70), 120);
     }
 
     // Architectes
     for (int i = 0; i < 5; i++) {
-        initialiseri(&colonie[index++], ARCHITECTES, 30 + (rand() % 70), 120);
+        initialiserFourmi(&colonie[index++], ARCHITECTES, 30 + (rand() % 70), 120);
     }
 
     // Nettoyeuses
     for (int i = 0; i < 6; i++) {
-        initialiseri(&colonie[index++], NETTOYEUSES, 30 + (rand() % 70), 120);
+        initialiserFourmi(&colonie[index++], NETTOYEUSES, 30 + (rand() % 70), 120);
     }
 
     // Nourrices
     for (int i = 0; i < 4; i++) {
-        initialiseri(&colonie[index++], NOURRICE, 30 + (rand() % 70), 120);
+        initialiserFourmi(&colonie[index++], NOURRICE, 30 + (rand() % 70), 120);
     }
 
     // Mâles
     for (int i = 0; i < 4; i++) {
-        initialiseri(&colonie[index++], MALE, 30 + (rand() % 80), 100);
+        initialiserFourmi(&colonie[index++], MALE, 30 + (rand() % 80), 100);
     }
 
     *tailleColonie = index; // Met à jour la taille réelle de la colonie
 }
 
-// Fonction pour afficher les informations d'une i
-// Fonction pour afficher les informations d'une i
-void afficheri(i i) {
+// Fonction pour afficher les informations d'une fourmi
+void afficherFourmi(Fourmi fourmi) {
     const char *roles[] = {"Reine", "Soldat", "Mâle", "Architecte", "Nettoyeuse", "Butineuse", "Nourrice"};
 
-    if (i.statut != 4) { // Ignorer les morts
+    if (fourmi.statut != 4) { // Ignorer les morts
         printf("Rôle: %s, Âge: %d jours, Statut: %d, PV: %d\n",
-               roles[i.type], i.age, i.statut, i.pv);
+               roles[fourmi.type], fourmi.age, fourmi.statut, fourmi.pv);
     }
 }
 
 // Fonction pour attribuer un rôle adulte aléatoire
-Typei assignerRoleAdulte() {
-    int roles[] = {BOUTINEUSES, NETTOYEUSES, ARCHITECTES, SOLDAT, MALE, NOURRICE};
-    return (Typei)roles[rand() % 6];
+TypeFourmi assignerRoleAdulte() {
+    TypeFourmi roles[] = {BOUTINEUSES, NETTOYEUSES, ARCHITECTES, SOLDAT, MALE, NOURRICE};
+    return roles[rand() % 6];
 }
 
-
-// Fonction pour mettre à jour le statut d'une i selon son âge ou ses PV
-void mettreAJourStatut(i *f) {
+// Fonction pour mettre à jour le statut d'une fourmi selon son âge ou ses PV
+void mettreAJourStatut(Fourmi *f) {
     if (f->type == REINE && f->age >= 3650) { // La reine vit plus longtemps
         f->statut = 4; // Mort
     } else if (f->type == MALE && f->age >= 200) { // Durée de vie limitée pour les mâles
@@ -113,7 +113,7 @@ void mettreAJourStatut(i *f) {
 }
 
 // Fonction pour gérer l'âge, la mort des is adultes et les transitions des non-adultes
-void gererLesMortsEtVieilliris(i *colonie, int *tailleColonie, Climat *temps, GestionNonAdultes *nonAdultes) {
+void gererLesMortsEtVieilliris(Fourmi *colonie, int *tailleColonie, Climat *temps, GestionNonAdultes *nonAdultes) {
     int i = 0;
     while (i < *tailleColonie) {
         if (colonie[i].statut == 4 || colonie[i].pv <= 0) {
@@ -156,8 +156,8 @@ void gererLesMortsEtVieilliris(i *colonie, int *tailleColonie, Climat *temps, Ge
         nonAdultes->nbnymphes -= nouveauxAdultes * 5;
 
         for (int i = 0; i < nouveauxAdultes; i++) {
-            Typei nouveauRole = assignerRoleAdulte();
-            initialiseri(&colonie[*tailleColonie], nouveauRole, 0, 120);
+            TypeFourmi nouveauRole = assignerRoleAdulte();
+            initialiserFourmi(&colonie[*tailleColonie], nouveauRole, 0, 120);
             (*tailleColonie)++;
             printf("Une nymphe est devenue adulte (%s).\n", roleToString(nouveauRole));
         }
@@ -172,15 +172,14 @@ void gererLesMortsEtVieilliris(i *colonie, int *tailleColonie, Climat *temps, Ge
     printf("------------------------------------------\n");
 }
 
-// Fonction utilitaire pour convertir le type de i en texte
-const char* roleToString(Typei type) {
+// Fonction utilitaire pour convertir le type de fourmi en texte
+const char* roleToString(TypeFourmi type) {
     const char *roles[] = {"Reine", "Soldat", "Mâle", "Architecte", "Nettoyeuse", "Butineuse", "Nourrice"};
     return roles[type];
 }
 
-
 // Fonction pour compter les types de is adultes dans la colonie
-void compterTypesis(i colonie[], int taille) {
+void compterTypesis(Fourmi colonie[], int taille) {
     int counts[7] = {0};
 
     for (int i = 0; i < taille; i++) {
@@ -209,15 +208,17 @@ void initialiserZones() {
 }
 
 // Fonction pour affecter une activité à une zone
-void affecterActivite(Zoneiliere zone, const char *description) {
+void affecterActivite(ZoneFourmiliere zone, const char *description) {
     if (zone >= 0 && zone < NB_ZONES) {
         snprintf(zonesDescriptions[zone], sizeof(zonesDescriptions[zone]), "%s", description);
         afficherUneZone(zone); // Afficher la zone mise à jour
     }
 }
 
+    
+
 // Fonction pour afficher une zone
-void afficherUneZone(Zoneiliere zone) {
+void afficherUneZone(ZoneFourmiliere zone) {
     if (zone >= 0 && zone < NB_ZONES) {
         printf("\nZone (%d) : %s\n", zone, zonesDescriptions[zone]);
     }
