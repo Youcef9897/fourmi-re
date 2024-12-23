@@ -113,25 +113,27 @@ void mettreAJourStatut(Fourmi *f) {
 }
 
 // Fonction pour gérer l'âge, la mort des is adultes et les transitions des non-adultes
-void gererLesMortsEtVieilliris(Fourmi *colonie, int *tailleColonie, Climat *temps, GestionNonAdultes *nonAdultes) {
+void gererLesMortsEtVieillirFourmis(Fourmi *colonie, int *tailleColonie, Climat *temps, GestionNonAdultes *nonAdultes) {
     int i = 0;
+
+    // Parcours des fourmis pour gérer les morts et vieillir les vivants
     while (i < *tailleColonie) {
-        if (colonie[i].statut == 4 || colonie[i].pv <= 0) {
-            // Retirer les is mortes
+        if (colonie[i].statut == 4 || colonie[i].pv <= 0) { // Fourmi morte
+            // Retirer la fourmi morte en décalant les éléments suivants
             for (int j = i; j < *tailleColonie - 1; j++) {
                 colonie[j] = colonie[j + 1];
             }
-            (*tailleColonie)--;
+            (*tailleColonie)--; // Réduire la taille de la colonie
         } else {
-            // Vieillir les is actives si ce n'est pas l'hiver
+            // Vieillir les fourmis actives sauf en hiver ou en automne
             if (temps && strcmp(temps->saison, "Automne") != 0 && strcmp(temps->saison, "Hiver") != 0) {
                 colonie[i].age++;
             }
-            i++;
+            i++; // Passer à la fourmi suivante
         }
     }
 
-    // Gestion des transitions pour les non-adultes
+    // Gestion des transitions des non-adultes (œufs → larves → nymphes → adultes)
     printf("\n--- Transition des non-adultes ---\n");
 
     // Œufs → Larves
@@ -155,13 +157,13 @@ void gererLesMortsEtVieilliris(Fourmi *colonie, int *tailleColonie, Climat *temp
         int nouveauxAdultes = nonAdultes->nbnymphes / 5;
         nonAdultes->nbnymphes -= nouveauxAdultes * 5;
 
-        for (int i = 0; i < nouveauxAdultes; i++) {
-            TypeFourmi nouveauRole = assignerRoleAdulte();
+        for (int j = 0; j < nouveauxAdultes; j++) {
+            TypeFourmi nouveauRole = assignerRoleAdulte(); // Rôle aléatoire
             initialiserFourmi(&colonie[*tailleColonie], nouveauRole, 0, 120);
             (*tailleColonie)++;
             printf("Une nymphe est devenue adulte (%s).\n", roleToString(nouveauRole));
         }
-        printf("Total de nouveaux adultes : %d. Nombre total de is : %d\n", nouveauxAdultes, *tailleColonie);
+        printf("Total de nouveaux adultes : %d. Nombre total de fourmis : %d\n", nouveauxAdultes, *tailleColonie);
     }
 
     // Affichage des non-adultes
