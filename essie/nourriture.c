@@ -4,6 +4,7 @@
 #include <math.h>
 #include "structures.h"
 #include "fourmis.h"
+#include "nourriture.h"
 
 #define CONSOMMATION_PAR_FOURMI 1.0 // Chaque fourmi adulte consomme 1 unité par jour
 #define CONSOMMATION_PAR_5_PETITS 1.0 // Nourrices consomment 1 unité pour 5 œufs, larves, ou nymphes
@@ -28,7 +29,7 @@ void collecteRessources(Fourmi *colonie, int *taille, StockNourriture *stockNour
 
     affecterActivite(ZONE_MONDE_EXTERNE, "Les BOUTINEUSES explorent le monde extérieur à la recherche de ressources.");
 
-    stockNourriture->sucre += boutineusesActives * 2; // Exemple
+    stockNourriture->sucre += boutineusesActives * 2;
     stockNourriture->graines += boutineusesActives * 2;
     stockNourriture->champignons += boutineusesActives * 1;
     stockNourriture->proteines += boutineusesActives * 1;
@@ -40,15 +41,13 @@ void collecteRessources(Fourmi *colonie, int *taille, StockNourriture *stockNour
 
     affecterActivite(ZONE_ENTREE_PRINCIPALE, "Les BOUTINEUSES reviennent avec les ressources.");
 
-    printf("\nCollecte terminée :\n");
+    printf("\n--- Collecte Terminée ---\n");
     printf("Sucre : %.1f, Champignons : %.1f, Protéines : %.1f, Graines : %.1f\n",
            stockNourriture->sucre, stockNourriture->champignons, stockNourriture->proteines, stockNourriture->graines);
 }
 
 void calculerConsommation(Fourmi *colonie, int tailleColonie, GestionNonAdultes *nonAdultes, GestionConsommation *consommation) {
-    consommation->reine = consommation->males = consommation->nourrices = 0;
-    consommation->nettoyeuses = consommation->architectes = consommation->butineuses = 0;
-    consommation->soldats = consommation->nonAdultes = 0;
+    memset(consommation, 0, sizeof(GestionConsommation)); // Initialiser à zéro
 
     for (int i = 0; i < tailleColonie; i++) {
         if (colonie[i].statut != 4 && colonie[i].statut == 3) {
@@ -80,12 +79,12 @@ void consommationRessources(Fourmi *colonie, int tailleColonie, StockNourriture 
     if (consommationTotale > 0) {
         float consommationParRessource = consommationTotale / 4.0;
 
-        stockNourriture->sucre = (stockNourriture->sucre > consommationParRessource) ? stockNourriture->sucre - consommationParRessource : 0;
-        stockNourriture->champignons = (stockNourriture->champignons > consommationParRessource) ? stockNourriture->champignons - consommationParRessource : 0;
-        stockNourriture->proteines = (stockNourriture->proteines > consommationParRessource) ? stockNourriture->proteines - consommationParRessource : 0;
-        stockNourriture->graines = (stockNourriture->graines > consommationParRessource) ? stockNourriture->graines - consommationParRessource : 0;
+        stockNourriture->sucre = fmax(0.0, stockNourriture->sucre - consommationParRessource);
+        stockNourriture->champignons = fmax(0.0, stockNourriture->champignons - consommationParRessource);
+        stockNourriture->proteines = fmax(0.0, stockNourriture->proteines - consommationParRessource);
+        stockNourriture->graines = fmax(0.0, stockNourriture->graines - consommationParRessource);
 
-        printf("\n--- Stocks restants de nourriture ---\n");
+        printf("\n--- Stocks Restants de Nourriture ---\n");
         printf("Sucre : %.1f, Champignons : %.1f, Protéines : %.1f, Graines : %.1f\n",
                stockNourriture->sucre, stockNourriture->champignons, stockNourriture->proteines, stockNourriture->graines);
     } else {
