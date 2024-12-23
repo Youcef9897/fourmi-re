@@ -23,11 +23,11 @@ void collecteRessources(Fourmi *colonie, int *taille, StockNourriture *stockNour
     }
 
     if (boutineusesActives == 0) {
-        printf("Pas de BOUTINEUSES actives disponibles pour la collecte.\n");
+        printf("Pas de BUTINEUSES actives disponibles pour la collecte.\n");
         return;
     }
 
-    affecterActivite(ZONE_MONDE_EXTERNE, "Les BOUTINEUSES explorent le monde extérieur à la recherche de ressources.");
+    affecterActivite(ZONE_MONDE_EXTERNE, "Les BUTINEUSES explorent le monde extérieur à la recherche de ressources.");
 
     stockNourriture->sucre += boutineusesActives * 2;
     stockNourriture->graines += boutineusesActives * 2;
@@ -39,7 +39,7 @@ void collecteRessources(Fourmi *colonie, int *taille, StockNourriture *stockNour
     stockMateriaux->feuilles += boutineusesActives;
     stockMateriaux->argiles += boutineusesActives;
 
-    affecterActivite(ZONE_ENTREE_PRINCIPALE, "Les BOUTINEUSES reviennent avec les ressources.");
+    affecterActivite(ZONE_ENTREE_PRINCIPALE, "Les BUTINEUSES reviennent avec les ressources.");
 
     printf("\n--- Collecte Terminée ---\n");
     printf("Sucre : %.1f, Champignons : %.1f, Protéines : %.1f, Graines : %.1f\n",
