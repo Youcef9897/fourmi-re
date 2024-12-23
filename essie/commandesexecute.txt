@@ -1,2 +1,2 @@
-compilation : gcc -o fourmiliere main.c climat.c fourmis.c nourriture.c reproduction.c -Wall
-execution : ./fourmiliere
+complilation :  gcc main.c fourmis.c nourriture.c climat.c reproduction.c -lm -o simulation
+execution : ./simulation
