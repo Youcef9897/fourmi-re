@@ -1,7 +1,6 @@
 #ifndef STRUCTURES_H
 #define STRUCTURES_H
 
-
 typedef enum {
     ZONE_MONDE_EXTERNE = 0,
     ZONE_ENTREE_PRINCIPALE,
@@ -12,13 +11,11 @@ typedef enum {
     ZONE_CIMETIERE
 } ZoneFourmiliere;
 
-
 typedef struct {
     ZoneFourmiliere zone;         // Zone actuelle
     char description[100];        // Description de l'activité
     int pvColonie;                // Points de vie de la colonie
 } Activite;
-
 
 typedef struct {
     int nboeufs;       // Nombre d'œufs
@@ -27,7 +24,6 @@ typedef struct {
     float consommationParJour; // Total de consommation par jour
 } GestionNonAdultes;
 
-            
 typedef enum {
     REINE,
     SOLDAT,
@@ -38,14 +34,12 @@ typedef enum {
     NOURRICE
 } TypeFourmi;
 
-
 typedef struct {
     TypeFourmi type; // Type de fourmi
     int age;
     int statut; // Statut numérique (exemple : 0=Oeuf, 1=Larve, etc.)
     int pv;
 } Fourmi;
-
 
 typedef struct {
     int jourActuel;
@@ -54,7 +48,6 @@ typedef struct {
     char periode[20];
 } Climat;
 
-
 typedef struct {
     int bois, pierres, feuilles, argiles;
 } StockMateriaux;
@@ -62,7 +55,6 @@ typedef struct {
 typedef struct {
     float sucre, champignons, proteines, graines;
 } StockNourriture;      
-
 
 typedef struct {
     float reine;
@@ -75,7 +67,6 @@ typedef struct {
     float nonAdultes;
 } GestionConsommation;
 
-
 typedef struct {
     int nbSoldats;
     int niveauAlerte;  // 0: Normal, 1: Élevé, 2: Critique
@@ -85,11 +76,9 @@ typedef struct {
     int PVcolonie;
 } Securite;
 
-
 typedef struct {
     int population[4]; // [Œufs, Larves, Nymphes, Adultes]
     float nourritureParStade[4]; // Consommation de nourriture par stade
 } Elevage;
-
 
 #endif // STRUCTURES_H
