@@ -6,6 +6,7 @@
 #include "fourmis.h"
 #include "nourriture.h"
 #include "climat.h"
+#include "combat.h"  
 #include "reproduction.h"
 
 int main() {
@@ -16,6 +17,7 @@ int main() {
     Fourmi colonie[100]; // Limite à 100 fourmis pour cet exemple
     int tailleColonie = 0; // Taille initiale de la colonie
     GestionNonAdultes gestionNonAdultes = {0, 0, 0}; // Gestion des non-adultes
+    int nbOeufs = 0;  // Définir le nombre d'œufs avant l'appel
 
     // Génération initiale de la colonie
     genererColonie(colonie, &tailleColonie);
@@ -48,41 +50,38 @@ int main() {
                        role, colonie[i].age, colonie[i].statut, colonie[i].pv);
             }
 
-            // Gérer les morts et vieillir les fourmis
-            gererLesMortsEtVieillirFourmis(colonie, &tailleColonie, &climat, &gestionNonAdultes);
-
-            // Consommation des ressources
-            consommationRessources(colonie, tailleColonie, &stockNourriture, &gestionNonAdultes);
-
             // Collecte des ressources
             collecteRessources(colonie, &tailleColonie, &stockNourriture, &stockMateriaux, climat.saison);
 
-            // Reproduction tous les 30 jours
-            joursDepuisDerniereReproduction++;
-            if (joursDepuisDerniereReproduction >= 30) {
-                joursDepuisDerniereReproduction = 0;
-                reproductionReine(colonie, &tailleColonie, &gestionNonAdultes, &climat);
+            // Gérer les combats
+            lancerCombat(colonie, tailleColonie); // Appel à la fonction de combat
+    
+            // Consommation des ressources
+            consommationRessources(colonie, tailleColonie, &stockNourriture, &gestionNonAdultes);
+
+            reproduction(colonie, &tailleColonie, &gestionNonAdultes, &stockNourriture, nbOeufs);
+
+            // Gérer les morts et vieillir les fourmis
+            gererLesMortsEtVieillirFourmis(colonie, &tailleColonie, &climat);
+
+            // Pause utilisateur
+            printf("Voulez-vous continuer au jour suivant ? (o/n) : ");
+            char reponse;
+            scanf(" %c", &reponse);
+
+            if (reponse == 'n' || reponse == 'N') {
+                break;  // Le 'break' doit être dans la boucle while
+            }
+
+            // Passage au jour suivant
+            avancerJour(&climat);
+
+            // Mise à jour du cycle
+            if (climat.jourActuel == 1) {
+                climat.cycle++;
             }
         }
-
-        // Pause utilisateur
-        printf("Voulez-vous continuer au jour suivant ? (o/n) : ");
-        char reponse;
-        scanf(" %c", &reponse);
-
-        if (reponse == 'n' || reponse == 'N') {
-            break;
-        }
-
-        // Passage au jour suivant
-        avancerJour(&climat);
-
-        // Mise à jour du cycle
-        if (climat.jourActuel == 1) {
-            climat.cycle++;
-        }
     }
-
     printf("Fin de la simulation.\n");
     printf("MERCI D'AVOIR JOUÉ !\n");
     return 0;
