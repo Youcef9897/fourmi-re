@@ -4,7 +4,7 @@
 #include "structures.h"
 
 // Déclaration des fonctions
-void gererLesMortsEtVieillirFourmis(Fourmi *colonie, int *tailleColonie, Climat *temps, GestionNonAdultes *nonAdultes);
+void gererLesMortsEtVieillirFourmis(Fourmi *colonie, int *tailleColonie, Climat *temps);
 void genererColonie(Fourmi *colonie, int *tailleColonie);
 void initialiserFourmi(Fourmi *fourmi, TypeFourmi type, int age, int pv);
 void afficherFourmi(Fourmi fourmi);
@@ -15,5 +15,6 @@ void affecterActivite(ZoneFourmiliere zone, const char *description);
 void afficherUneZone(ZoneFourmiliere zone);
 void compterTypesFourmis(Fourmi colonie[], int taille);
 void initialiserZones();
-
+void initialiserAlertes();
+void modifierEtAfficherAlerte(Alerte alerte, const char* description);
 #endif // FOURMIS_H
