@@ -1,2 +1,7 @@
 complilation :  gcc main.c fourmis.c nourriture.c climat.c reproduction.c -lm -o simulation
 execution : ./simulation
+
+- faire pot de miel nouveau code
+- faire un PV colonie dans le code fourmis.c 
+- faire une elevage les nouveaux nées qui gère la consommation avec la nourrice qui leurs donne a manger dans le code reproduction.c 
+- faire une fonction qui gère l'état de changement des non adultes (chaque 10 jours changement d'état en oeuf à lavre ext.....) sur reproduction.c
