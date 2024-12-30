@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
+
 #include "structures.h"
 
 // Prototypes des fonctions utilisées dans ce fichier
@@ -13,9 +15,10 @@ void afficherUneZone(ZoneFourmiliere zone);
 #define NB_ZONES 7
 static char zonesDescriptions[NB_ZONES][200]; // Tableau pour stocker les descriptions des zones
 
-// Fonction pour initialiser une i adulte
-#define NB_ZONES 7
-static char zonesDescriptions[NB_ZONES][200]; // Tableau pour stocker les descriptions des zones
+// Déclaration globale pour les alertes
+#define NB_ALERTES 4
+static char alertesDescriptions[NB_ALERTES][200]; // Tableau pour stocker les descriptions des alertes
+
 
 // Fonction pour initialiser une fourmi adulte
 void initialiserFourmi(Fourmi *fourmi, TypeFourmi type, int age, int pv) {
@@ -112,14 +115,14 @@ void mettreAJourStatut(Fourmi *f) {
     }
 }
 
-// Fonction pour gérer l'âge, la mort des is adultes et les transitions des non-adultes
-void gererLesMortsEtVieillirFourmis(Fourmi *colonie, int *tailleColonie, Climat *temps, GestionNonAdultes *nonAdultes) {
+void gererLesMortsEtVieillirFourmis(Fourmi *colonie, int *tailleColonie, Climat *temps) {
     int i = 0;
 
-    // Parcours des fourmis pour gérer les morts et vieillir les vivants
     while (i < *tailleColonie) {
         if (colonie[i].statut == 4 || colonie[i].pv <= 0) { // Fourmi morte
-            // Retirer la fourmi morte en décalant les éléments suivants
+            printf("Fourmi [%s] âgée de %d jours est morte.\n", roleToString(colonie[i].type), colonie[i].age);
+
+            // Retirer la fourmi morte
             for (int j = i; j < *tailleColonie - 1; j++) {
                 colonie[j] = colonie[j + 1];
             }
@@ -129,50 +132,11 @@ void gererLesMortsEtVieillirFourmis(Fourmi *colonie, int *tailleColonie, Climat 
             if (temps && strcmp(temps->saison, "Automne") != 0 && strcmp(temps->saison, "Hiver") != 0) {
                 colonie[i].age++;
             }
-            i++; // Passer à la fourmi suivante
+            i++;
         }
     }
-
-    // Gestion des transitions des non-adultes (œufs → larves → nymphes → adultes)
-    printf("\n--- Transition des non-adultes ---\n");
-
-    // Œufs → Larves
-    if (nonAdultes->nboeufs >= 5) {
-        int nouvellesLarves = nonAdultes->nboeufs / 5;
-        nonAdultes->nboeufs -= nouvellesLarves * 5;
-        nonAdultes->nblarves += nouvellesLarves;
-        printf("%d œufs sont devenus des larves. Total de larves : %d\n", nouvellesLarves, nonAdultes->nblarves);
-    }
-
-    // Larves → Nymphes
-    if (nonAdultes->nblarves >= 5) {
-        int nouvellesNymphes = nonAdultes->nblarves / 5;
-        nonAdultes->nblarves -= nouvellesNymphes * 5;
-        nonAdultes->nbnymphes += nouvellesNymphes;
-        printf("%d larves sont devenues des nymphes. Total de nymphes : %d\n", nouvellesNymphes, nonAdultes->nbnymphes);
-    }
-
-    // Nymphes → Adultes
-    if (nonAdultes->nbnymphes >= 5) {
-        int nouveauxAdultes = nonAdultes->nbnymphes / 5;
-        nonAdultes->nbnymphes -= nouveauxAdultes * 5;
-
-        for (int j = 0; j < nouveauxAdultes; j++) {
-            TypeFourmi nouveauRole = assignerRoleAdulte(); // Rôle aléatoire
-            initialiserFourmi(&colonie[*tailleColonie], nouveauRole, 0, 120);
-            (*tailleColonie)++;
-            printf("Une nymphe est devenue adulte (%s).\n", roleToString(nouveauRole));
-        }
-        printf("Total de nouveaux adultes : %d. Nombre total de fourmis : %d\n", nouveauxAdultes, *tailleColonie);
-    }
-
-    // Affichage des non-adultes
-    printf("\nÉtat actuel des non-adultes :\n");
-    printf(" - Œufs : %d\n", nonAdultes->nboeufs);
-    printf(" - Larves : %d\n", nonAdultes->nblarves);
-    printf(" - Nymphes : %d\n", nonAdultes->nbnymphes);
-    printf("------------------------------------------\n");
 }
+
 
 // Fonction utilitaire pour convertir le type de fourmi en texte
 const char* roleToString(TypeFourmi type) {
@@ -206,7 +170,7 @@ void initialiserZones() {
     strcpy(zonesDescriptions[ZONE_DEFENSE_COLONIE], "Défense de la colonie : Protection.");
     strcpy(zonesDescriptions[ZONE_CHAMBRE_ROYALE], "Chambre royale : Reine et reproduction.");
     strcpy(zonesDescriptions[ZONE_STOCKAGE_OEUFS], "Stockage des œufs : Soins et développement.");
-    strcpy(zonesDescriptions[ZONE_CIMETIERE], "Cimetière : Restes des is.");
+    strcpy(zonesDescriptions[ZONE_CIMETIERE], "Cimetière : Restes des fourmis mortes.");
 }
 
 // Fonction pour affecter une activité à une zone
@@ -217,11 +181,29 @@ void affecterActivite(ZoneFourmiliere zone, const char *description) {
     }
 }
 
-    
-
 // Fonction pour afficher une zone
 void afficherUneZone(ZoneFourmiliere zone) {
     if (zone >= 0 && zone < NB_ZONES) {
         printf("\nZone (%d) : %s\n", zone, zonesDescriptions[zone]);
+    }
+}
+
+// Fonction pour initialiser les alertes
+void initialiserAlertes() {
+    strcpy(alertesDescriptions[ALERTE_ODEUR], "Alerte Olfactive: Intrus détecté !");
+    strcpy(alertesDescriptions[ALERTE_VERIF_VISUELLE], "Alerte Visuelle: Vérification nécessaire.");
+    strcpy(alertesDescriptions[ALERTE_SONORE], "Alerte Sonore: Nourriture insuffisante.");
+    strcpy(alertesDescriptions[ALERTE_GUIDAGE_TACTILE], "Alerte Tactile: Guidage nécessaire.");
+}
+
+// Fonction pour modifier et afficher une alerte
+void modifierEtAfficherAlerte(Alerte alerte, const char* description) {
+    if (alerte >= 0 && alerte < NB_ALERTES) {
+        // Si la description est différente de l'actuelle, on modifie
+        if (strcmp(alertesDescriptions[alerte], description) != 0) {
+            snprintf(alertesDescriptions[alerte], sizeof(alertesDescriptions[alerte]), "%s", description);
+        }
+        // Afficher l'alerte (modifiée ou non)
+        printf("\nAlerte (%d) : %s\n", alerte, alertesDescriptions[alerte]);
     }
 }
