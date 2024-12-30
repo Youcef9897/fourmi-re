@@ -1,5 +1,6 @@
 #ifndef STRUCTURES_H
 #define STRUCTURES_H
+#include <stdbool.h>
 
 typedef enum {
     ZONE_MONDE_EXTERNE = 0,
@@ -14,8 +15,9 @@ typedef enum {
 typedef struct {
     ZoneFourmiliere zone;         // Zone actuelle
     char description[100];        // Description de l'activité
-    int pvColonie;                // Points de vie de la colonie
 } Activite;
+
+
 
 typedef struct {
     int nboeufs;       // Nombre d'œufs
@@ -31,7 +33,7 @@ typedef enum {
     ARCHITECTES,
     NETTOYEUSES,
     BOUTINEUSES,
-    NOURRICE
+    NOURRICE,
 } TypeFourmi;
 
 typedef struct {
@@ -75,6 +77,21 @@ typedef struct {
     int otagesCaptures;
     int PVcolonie;
 } Securite;
+
+typedef enum {
+    ALERTE_ODEUR = 0,        // Alerte si une odeur est détectée
+    ALERTE_VERIF_VISUELLE,   // Alerte pour la vérification visuelle des fourmis
+    ALERTE_SONORE,           // Alerte sonore si le stockage de nourriture est vide
+    ALERTE_GUIDAGE_TACTILE,   // Alerte pour guider une ouvrière à une zone spécifique
+    NB_ALERTES                // Nombre total d'alertes
+} Alerte;
+
+// Structure pour associer chaque alerte à une description
+typedef struct {
+    Alerte alerte;            // Type d'alerte
+    char description[256];    // Description associée à l'alerte
+} AlerteDescription;
+
 
 typedef struct {
     int population[4]; // [Œufs, Larves, Nymphes, Adultes]
