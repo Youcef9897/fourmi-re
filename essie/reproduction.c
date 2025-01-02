@@ -49,21 +49,17 @@ void deposerOeufs(Fourmi *colonie, int *tailleColonie, int nbOeufs) {
 // Fonction pour faire évoluer les non-adultes (œufs -> larves -> nymphes -> adultes)
 void evoluerNonAdultes(Fourmi *colonie, int *tailleColonie, GestionNonAdultes *gestionNonAdultes) {
     // Les œufs deviennent des larves, puis des nymphes et enfin des adultes
+    int temp = 0;
     if (gestionNonAdultes->nboeufs > 0) {
+        temp = gestionNonAdultes->nblarves;
         gestionNonAdultes->nblarves= gestionNonAdultes->nboeufs ;
+        printf("%d œufs sont devenus des larves.\n", gestionNonAdultes->nboeufs);
         gestionNonAdultes->nboeufs=0;
-        printf("Un œuf est devenu une larve.\n");
+        
     }
 
-    else if (gestionNonAdultes->nblarves > 0) {
-        gestionNonAdultes->nbnymphes=gestionNonAdultes->nblarves;
-        gestionNonAdultes->nblarves=0;
-        printf("Une larve est devenue une nymphe.\n");
-    }
-
-    if (gestionNonAdultes->nbnymphes > 0) {
-        gestionNonAdultes->nbnymphes--;
-        printf("Une nymphe est devenue une fourmi adulte.\n");
+    if (gestionNonAdultes->nblarves > 0) {
+        gestionNonAdultes->nbnymphes=temp;
     }
 }
 
