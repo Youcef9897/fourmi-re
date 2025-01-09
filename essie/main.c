@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <unistd.h>
 #include "structures.h"
 #include "FourmisColonie.h"  // Inclus le fichier fourmis.h
 #include "Ressources.h" 
