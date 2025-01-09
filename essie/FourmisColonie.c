@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <stdbool.h>
 #include "structures.h"
-#include "FourmisColonie.h"
+#include "fourmis.h"
+
 
 #define NB_ZONES 7 // Nombre de zones dans la fourmilière
 #define NB_ALERTES 4 // Nombre d'alertes possibles
@@ -18,8 +20,11 @@ const int pvFourmis[] = {300, 100, 120, 120, 120, 120, 120}; // PV des fourmis p
 
 // Fonction pour afficher l'état de la colonie
 void afficherEtatColonie(Colonie *colonie) {
+    usleep(700000);
     printf("\n--- État de la colonie ---\n");
+    usleep(700000);
     printf("Points de vie de la colonie : %d ❤️\n", colonie->PvColonie); // Affiche les points de vie de la colonie
+    usleep(700000);
     printf("Nombre total de fourmis : %d 🐜\n", colonie->nbTotalFourmis); // Affiche le nombre total de fourmis
 }
 
@@ -42,6 +47,7 @@ void affecterActivite(ZoneFourmiliere zone, const char *description) {
         strcpy(zonesDescriptions[zone], description);
 
         // Affichage des informations de la zone
+        usleep(700000);
         printf("\nZone (%d) : %s\n", zone, zonesDescriptions[zone]);
     }
 }
@@ -114,6 +120,7 @@ void genererColonie(Fourmi *colonie, int *tailleColonie, Colonie *etatColonie) {
 void afficherFourmi(Fourmi fourmi) {
     if (fourmi.statut != 4) { // Ignorer les mortes
         // Affiche les informations d'une fourmi : rôle, âge, statut et PV
+        usleep(100000); 
         printf("🐜 Rôle: %s, Âge: %d jours, Statut: %d, PV: %d\n", roles[fourmi.type], fourmi.age, fourmi.statut, fourmi.pv);
     }
 }
@@ -124,6 +131,7 @@ void gererLesMortsEtVieillirFourmis(Fourmi *colonie, int *tailleColonie, Climat 
     while (i < *tailleColonie) {
         // Vérifie si la fourmi est morte ou a des PV inférieurs ou égaux à 0
         if (colonie[i].statut == 4 || colonie[i].pv <= 0) {
+            usleep(700000);
             printf("Fourmi [%s] âgée de %d jours est morte. 💀\n", roles[colonie[i].type], colonie[i].age);
             for (int j = i; j < *tailleColonie - 1; j++) {
                 colonie[j] = colonie[j + 1]; // Retirer la fourmi morte
@@ -144,6 +152,7 @@ void gererLesMortsEtVieillirFourmis(Fourmi *colonie, int *tailleColonie, Climat 
         if (colonie[i].statut != 4) { total++; } // Ignorer les mortes
     }
     etatColonie->nbTotalFourmis = total;
+    usleep(700000);
     printf("\nNombre total de fourmis mis à jour : %d 🐜\n", total);
 }
 
@@ -163,6 +172,7 @@ void modifierEtAfficherAlerte(Alerte alerte, const char* description) {
             strcpy(alertesDescriptions[alerte], description); // Mise à jour de la description de l'alerte
         }
         // Affiche l'alerte (modifiée ou non)
+        usleep(700000);
         printf("\nAlerte (%d) : %s 🚨\n", alerte, alertesDescriptions[alerte]);
     }
 }
