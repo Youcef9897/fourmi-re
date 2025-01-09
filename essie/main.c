@@ -3,85 +3,99 @@
 #include <time.h>
 #include <string.h>
 #include "structures.h"
-#include "fourmis.h"
-#include "nourriture.h"
+#include "FourmisColonie.h"  // Inclus le fichier fourmis.h
+#include "Ressources.h" 
 #include "climat.h"
 #include "combat.h"  
 #include "reproduction.h"
 
 int main() {
+    printf("\033[38;5;94m");
+    printf("███████╗ ██████╗ ██╗   ██╗ ██████╗  ███╗   ███╗ ██╗ ██╗      █████╗  ███╗   ██╗ ██████╗ \n");
+    printf("██╔════╝██╔═══██╗██║   ██║ ██╔═ ██╗ ████╗ ████║ ██║ ██║     ██╔══██╗ ████╗  ██║ ██╔══██╗\n");
+    printf("█████╗  ██║   ██║██║   ██║ ██████╔╝ ██╔████╔██║ ██║ ██║     ███████║ ██╔██╗ ██║ ██║  ██║\n");
+    printf("██╔══╝  ██║   ██║██║   ██║ ██  ██║  ██║╚██╔╝██║ ██║ ██║     ██╔══██║ ██║ ╚████║ ██║  ██║\n");
+    printf("██║     ╚██████╔╝╚██████╔╝ ██║ ███╗ ██║ ╚═╝ ██║ ██║ ███████║██║  ██║ ██║  ╚███║ ██████╔╝\n");
+    printf("╚═╝      ╚═════╝  ╚═════╝  ╚═╝ ╚══╝ ╚═╝     ╚═╝ ╚═╝ ╚══════╝╚═╝  ╚═╝ ╚═╝   ╚══╝ ╚═════╝ \n");
+    printf("\033[0m");
+
     // Initialisation des structures principales
-    Climat climat = {1, 1, "Été", "Période d'activité"}; // Jour 1, cycle 1, saison initiale
+    Colonie etatColonie = {1000, 0}; // Par exemple, 1000 PV au départ, 0 fourmis.
+    Climat climat = {1, 1, "Été", "Période d'activité"}; // Jour 1, cycle 1, saison initiale : Été.
     StockNourriture stockNourriture = {50.0, 50.0, 50.0, 50.0}; // Stocks de nourriture initiaux
     StockMateriaux stockMateriaux = {30, 30, 30, 30}; // Stocks de matériaux initiaux
     Fourmi colonie[100]; // Limite à 100 fourmis pour cet exemple
     int tailleColonie = 0; // Taille initiale de la colonie
-    GestionNonAdultes gestionNonAdultes = {0, 0, 0}; // Gestion des non-adultes
-    int nbOeufs = 0;  // Définir le nombre d'œufs avant l'appel
+    GestionReproduction gestionreproduction = {0, 0, 0}; // Gestion des non-adultes
+    int nbOeufs = 0;  // Nombre initial d'œufs
 
     // Génération initiale de la colonie
-    genererColonie(colonie, &tailleColonie);
+    genererColonie(colonie, &tailleColonie, &etatColonie);
 
     // Initialisation supplémentaire
-    srand(time(NULL)); // Générateur aléatoire
-    definirClimat(&climat); // Définir le climat
-    initialiserZones(); // Initialiser les zones
+    srand(time(NULL)); // Initialisation du générateur aléatoire
+    initialiserZones(); // Initialisation des zones
 
-    int joursDepuisDerniereReproduction = 0; // Suivi du temps
+    int joursDepuisDerniereReproduction = 0; // Suivi du temps depuis la dernière reproduction
 
     printf("Début de la simulation de la colonie de fourmis...\n");
 
     while (1) {
-        // Afficher les informations climatiques
-        afficherClimat(&climat);
-
+        // Vérifier si la période est l'hibernation
         if (strcmp(climat.periode, "Hibernation") == 0) {
-            printf("La colonie est en hibernation. Aucune activité aujourd'hui.\n");
+            afficherClimat(&climat);
+            printf("\nNous sommes en hibernation. Aucune activité à faire pendant cette période.\n");
         } else {
-            printf("\n--- Activité normale de la colonie aujourd'hui ---\n");
-
+            afficherEtatColonie(&etatColonie);
+            afficherClimat(&climat);
             // Afficher l'état général de la colonie
             printf("\n--- État général de la colonie ---\n");
-            printf("Nombre total de fourmis : %d\n", tailleColonie);
-
             for (int i = 0; i < tailleColonie; i++) {
-                const char *role = roleToString(colonie[i].type);
-                printf("Rôle: %s, Âge: %d jours, Statut: %d, PV: %d\n", 
-                       role, colonie[i].age, colonie[i].statut, colonie[i].pv);
+                afficherFourmi(colonie[i]);  // Afficher chaque fourmi
             }
-
-            // Collecte des ressources
-            collecteRessources(colonie, &tailleColonie, &stockNourriture, &stockMateriaux, climat.saison);
-
-            // Gérer les combats
-            lancerCombat(colonie, tailleColonie); // Appel à la fonction de combat
-    
-            // Consommation des ressources
-            consommationRessources(colonie, tailleColonie, &stockNourriture, &gestionNonAdultes);
-
-            reproduction(colonie, &tailleColonie, &gestionNonAdultes, &stockNourriture, nbOeufs);
 
             // Gérer les morts et vieillir les fourmis
-            gererLesMortsEtVieillirFourmis(colonie, &tailleColonie, &climat);
+            gererLesMortsEtVieillirFourmis(colonie, &tailleColonie, &climat, &etatColonie);
+            
+            // Collecte des ressources
+            collecteNourriture(colonie, tailleColonie, &stockNourriture, climat.saison);
+            
+            // Collecte des matériaux
+            collecteMateriaux(colonie, tailleColonie, &stockMateriaux, &etatColonie);
 
-            // Pause utilisateur
-            printf("Voulez-vous continuer au jour suivant ? (o/n) : ");
-            char reponse;
-            scanf(" %c", &reponse);
+            // Affichage des stocks de matériaux après la collecte
+            printf("\n--- Stocks Restants de Matériaux ---\n");
+            printf("Bois : %d, Pierres : %d, Feuilles : %d, Argiles : %d\n", stockMateriaux.bois, stockMateriaux.pierres, stockMateriaux.feuilles, stockMateriaux.argiles);
 
-            if (reponse == 'n' || reponse == 'N') {
-                break;  // Le 'break' doit être dans la boucle while
-            }
+            // Gérer les combats
+            lancerCombat(colonie, tailleColonie, &etatColonie, &stockNourriture); // Appel à la fonction de combat
 
-            // Passage au jour suivant
-            avancerJour(&climat);
+            // Consommation des ressources
+            consommationNourriture(colonie, tailleColonie, &stockNourriture);
 
-            // Mise à jour du cycle
-            if (climat.jourActuel == 1) {
-                climat.cycle++;
-            }
+            // Gérer la reproduction
+            reproduction(colonie, &tailleColonie, &gestionreproduction, &stockNourriture, nbOeufs);
+
+            // Afficher l'état des non-adultes après la reproduction
+            afficherNonAdultes(&gestionreproduction);
+
+            // Consommer des ressources pour les non-adultes
+            consommationRessourcesNonAdultes(&gestionreproduction, &stockNourriture);
         }
+
+        // Pause utilisateur
+        printf("\nVoulez-vous continuer au jour suivant ? (o/n) : ");
+        char reponse;
+        scanf(" %c", &reponse);
+
+        if (reponse == 'n' || reponse == 'N') {
+            break;  // Le 'break' doit être dans la boucle while
+        }
+
+        // Passage au jour suivant
+        avancerJour(&climat);
     }
+
     printf("Fin de la simulation.\n");
     printf("MERCI D'AVOIR JOUÉ !\n");
     return 0;
