@@ -31,7 +31,14 @@ void initialiserEnnemi(void *ennemi, int isPredateur) {
 // Fonction de combat
 void combat(void *ennemi, Fourmi *soldat, Colonie *etatColonie, StockNourriture *stockNourriture, int isPredateur) {
 
-    printf("\n--- Début du combat ---\n"); // Début du combat
+    printf("\033[1;31m");
+    printf("███████╗ ██╗ ███████╗    ██╗  ██╗████████╗██║\n");
+    printf("██╔════╝ ██║ ██╔══       ██║  ██║╚══██╔══╝██║\n");
+    printf("█████╗   ██║ ██║    ███║ ███████║   ██║   ██║\n");
+    printf("██╔══╝   ██║ ██║   ██║   ██╔══██║   ██║   ╚═╝\n");
+    printf("██║      ██║ ╚██████╔    ██║  ██║   ██║   ██║\n");
+    printf("╚═╝      ╚═╝  ╚═════╝    ╚═╝  ╚═╝   ╚═╝   ╚═╝\n");
+    printf("\033[0m");
 
     if (isPredateur) {
         // Si c'est un prédateur, la colonie est détruite immédiatement
