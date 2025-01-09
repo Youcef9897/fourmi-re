@@ -11,7 +11,7 @@
 #include "reproduction.h"
 
 int main() {
-    for (int j = 0; j < 3; j++) {  // Boucle pour faire clignoter 10 fois
+    for (int j = 0; j < 10; j++) {  // Boucle pour faire clignoter 10 fois
         // Efface l'écran
         printf("\033[2J");
         // Positionne le curseur au début
