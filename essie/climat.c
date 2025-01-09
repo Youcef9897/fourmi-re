@@ -1,6 +1,7 @@
 #include <stdio.h>  // Inclusion de la bibliothèque standard d'entrée/sortie.
 #include <string.h>  // Inclusion de la bibliothèque pour les opérations sur les chaînes de caractères.
 #include "climat.h"  // Inclusion du fichier d'en-tête "climat.h".
+#include <unistd.h>
 
 // Tableau des saisons. Chaque entrée correspond à une saison de l'année.
 const char *saisons[] = {"Été", "Automne", "Hiver", "Printemps"};
@@ -34,6 +35,7 @@ void avancerJour(Climat *climat) {
         // Si une année complète (quatre saisons) a été parcourue, on incrémente le cycle.
         if (saisonIndex == 0) {  // Si la saison est de nouveau "Été", cela signifie qu'une année est passée.
             climat->cycle++;  // Incrémentation du cycle (nouvelle année).
+            usleep(700000);
             printf("\n🌞 Un nouveau cycle commence après l'été ! Cycle actuel : %d 🌞\n", climat->cycle);  // Affichage du nouveau cycle.
         }
     }
@@ -41,10 +43,16 @@ void avancerJour(Climat *climat) {
 
 // Fonction pour afficher le climat actuel.
 void afficherClimat(const Climat *climat) {
+    usleep(700000);
     printf("\n--- 🌍 Climat Actuel 🌍 ---\n");
+    usleep(700000);
     printf("🌸 Saison : %s\n", climat->saison);  // Affichage de la saison actuelle.
+    usleep(700000);
     printf("🕒 Période : %s\n", climat->periode);  // Affichage de la période associée à la saison.
+    usleep(700000);
     printf("🔄 Cycle : %d\n", climat->cycle);  // Affichage du cycle actuel (par exemple, l'année en cours).
+    usleep(700000);
     printf("📅 Jour Actuel : %d\n", climat->jourActuel);  // Affichage du jour actuel dans la saison.
+    usleep(700000);
     printf("-----------------------\n");
 }
