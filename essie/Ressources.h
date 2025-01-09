@@ -2,7 +2,7 @@
 #define NOURRITURE_H
 
 #include "structures.h"
-#include "FourmisColonie.h" // Inclusion pour accéder aux fonctions des fourmis
+#include "fourmis.h" // Inclusion pour accéder aux fonctions des fourmis
 
 // Fonction pour collecter de la nourriture par les fourmis
 void collecteNourriture(Fourmi *colonie, int taille, StockNourriture *stockNourriture, const char *saison);
