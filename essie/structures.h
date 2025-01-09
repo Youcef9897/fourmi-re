@@ -84,10 +84,10 @@ typedef struct {
 
 // Stockage de la nourriture
 typedef struct {
-    float sucre;         // Quantité de sucre
-    float champignon;   // Quantité de champignons
-    float feuille;     // Quantité de protéines
-    float graine;       // Quantité de graines
+    float sucre;         // Quantité de sucre : Sève des arbres , Fruits tombés au sol, Nectar des fleurs
+    float champignon;   // Quantité de champignons : Champignons, Moisissures
+    float feuille;     // Quantité de feuilles : Feuilles tombées au sol, Feuilles de plantes
+    float graine;       // Quantité de graines : Plantes et herbes, Plantes tombées au sol
 } StockNourriture;
 
 // ------------------------------------
