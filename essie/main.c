@@ -11,7 +11,7 @@
 #include "reproduction.h"
 
 int main() {
-    for (int i = 0; i < 10; i++) {  // Boucle pour faire clignoter 10 fois
+    for (int j = 0; j < 3; j++) {  // Boucle pour faire clignoter 10 fois
         // Efface l'écran
         printf("\033[2J");
         // Positionne le curseur au début
@@ -56,18 +56,18 @@ int main() {
         srand(time(NULL)); // Initialisation du générateur aléatoire
         initialiserZones(); // Initialisation des zones
     
-        printf("Début de la simulation de la colonie de fourmis...\n");
+        printf("🐜 Début de la simulation de la colonie de fourmis...\n");
     
         while (1) {
             // Activité 1 : Vérifier si la période est l'hibernation
             if (strcmp(climat.periode, "Hibernation") == 0) {
                 afficherClimat(&climat);
-                printf("\nNous sommes en hibernation. Aucune activité à faire pendant cette période.\n");
+                printf("\n❄️ Nous sommes en hibernation. Aucune activité à faire pendant cette période.\n");
             } else {
                 // Activité 2 : Afficher l'état général de la colonie
                 afficherEtatColonie(&etatColonie);
                 afficherClimat(&climat);
-                printf("\n--- État général de la colonie ---\n");
+                printf("\n--- 🏠 État général de la colonie ---\n");
                 for (int i = 0; i < tailleColonie; i++) {
                     afficherFourmi(colonie[i]);  // Afficher chaque fourmi
                 }
@@ -76,34 +76,34 @@ int main() {
                 gererLesMortsEtVieillirFourmis(colonie, &tailleColonie, &climat, &etatColonie);
                 
                 // Activité 4 : Collecte des ressources - Nourriture
-                printf("\n--- Activité 4 : Collecte des ressources (Nourriture) ---\n");
+                printf("\n--- 🌾 Activité 4 : Collecte des ressources (Nourriture) ---\n");
                 collecteNourriture(colonie, tailleColonie, &stockNourriture, climat.saison);
                 
                 // Activité 5 : Collecte des ressources - Matériaux
-                printf("\n--- Activité 5 : Collecte des ressources (Matériaux) ---\n");
+                printf("\n--- 🪵 Activité 5 : Collecte des ressources (Matériaux) ---\n");
                 collecteMateriaux(colonie, tailleColonie, &stockMateriaux, &etatColonie);
     
                 // Affichage des stocks de matériaux après la collecte
-                printf("\n--- Stocks Restants de Matériaux ---\n");
+                printf("\n--- 📦 Stocks Restants de Matériaux ---\n");
                 printf("Bois : %d, Pierres : %d, Feuilles : %d, Argiles : %d\n", stockMateriaux.bois, stockMateriaux.pierres, stockMateriaux.feuilles, stockMateriaux.argiles);
     
                 // Activité 6 : Gérer les combats
-                printf("\n--- Activité 6 : Gestion des combats ---\n");
+                printf("\n--- ⚔️ Activité 6 : Gestion des combats ---\n");
                 lancerCombat(colonie, tailleColonie, &etatColonie, &stockNourriture); // Appel à la fonction de combat
     
                 // Activité 7 : Consommation des ressources
-                printf("\n--- Activité 7 : Consommation des ressources ---\n");
+                printf("\n--- 🍽️ Activité 7 : Consommation des ressources ---\n");
                 consommationNourriture(colonie, tailleColonie, &stockNourriture);
     
                 // Activité 8 : Gérer la reproduction
-                printf("\n--- Activité 8 : Gestion de la reproduction ---\n");
+                printf("\n--- 🐣 Activité 8 : Gestion de la reproduction ---\n");
                 reproduction(colonie, &tailleColonie, &gestionreproduction, nbOeufs);
     
                 // Afficher l'état des non-adultes après la reproduction
                 afficherNonAdultes(&gestionreproduction);
     
                 // Activité 9 : Consommation des ressources pour les non-adultes
-                printf("\n--- Activité 9 : Consommation des ressources pour les non-adultes ---\n");
+                printf("\n--- 🍼 Activité 9 : Consommation des ressources pour les non-adultes ---\n");
                 consommationRessourcesNonAdultes(&gestionreproduction, &stockNourriture);
             }
     
@@ -122,12 +122,12 @@ int main() {
             printf("╚█████╔╝╚██████╔╝ ╚██████╔╝██║ ███╗         ███████║╚██████╔╝██║ ╚████╔╝ ██║  ██║██║ ╚████║   ██║   \n");
             printf(" ╚════╝  ╚═════╝   ╚═════╝ ╚═╝ ╚══╝         ╚══════╝ ╚═════╝ ╚═╝  ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   \n");
             // Activité 10 : Passage au jour suivant
-            printf("\n--- Activité 10 : Passage au jour suivant ---\n");
+            printf("\n--- 📅 Activité 10 : Passage au jour suivant ---\n");
             avancerJour(&climat);
         }
     
         printf("Fin de la simulation.\n");
-        printf("MERCI D'AVOIR JOUÉ !\n");
+        printf("MERCI D'AVOIR JOUÉ ! 🙏\n");
         return 0;
     }
 }
