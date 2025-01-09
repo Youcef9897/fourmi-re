@@ -26,7 +26,7 @@ int main() {
     StockMateriaux stockMateriaux = {30, 30, 30, 30}; // Stocks de matériaux initiaux
     Fourmi colonie[100]; // Limite à 100 fourmis pour cet exemple
     int tailleColonie = 0; // Taille initiale de la colonie
-    GestionReproduction gestionreproduction = {0, 0, 0}; // Gestion des non-adultes
+    GestionReproduction gestionreproduction = {0, 0, 0, 0.0}; // Gestion des non-adultes
     int nbOeufs = 0;  // Nombre initial d'œufs
 
     // Génération initiale de la colonie
@@ -36,50 +36,54 @@ int main() {
     srand(time(NULL)); // Initialisation du générateur aléatoire
     initialiserZones(); // Initialisation des zones
 
-    int joursDepuisDerniereReproduction = 0; // Suivi du temps depuis la dernière reproduction
-
     printf("Début de la simulation de la colonie de fourmis...\n");
 
     while (1) {
-        // Vérifier si la période est l'hibernation
+        // Activité 1 : Vérifier si la période est l'hibernation
         if (strcmp(climat.periode, "Hibernation") == 0) {
             afficherClimat(&climat);
             printf("\nNous sommes en hibernation. Aucune activité à faire pendant cette période.\n");
         } else {
+            // Activité 2 : Afficher l'état général de la colonie
             afficherEtatColonie(&etatColonie);
             afficherClimat(&climat);
-            // Afficher l'état général de la colonie
             printf("\n--- État général de la colonie ---\n");
             for (int i = 0; i < tailleColonie; i++) {
                 afficherFourmi(colonie[i]);  // Afficher chaque fourmi
             }
 
-            // Gérer les morts et vieillir les fourmis
+            // Activité 3 : Gérer les morts et vieillir les fourmis
             gererLesMortsEtVieillirFourmis(colonie, &tailleColonie, &climat, &etatColonie);
             
-            // Collecte des ressources
+            // Activité 4 : Collecte des ressources - Nourriture
+            printf("\n--- Activité 4 : Collecte des ressources (Nourriture) ---\n");
             collecteNourriture(colonie, tailleColonie, &stockNourriture, climat.saison);
             
-            // Collecte des matériaux
+            // Activité 5 : Collecte des ressources - Matériaux
+            printf("\n--- Activité 5 : Collecte des ressources (Matériaux) ---\n");
             collecteMateriaux(colonie, tailleColonie, &stockMateriaux, &etatColonie);
 
             // Affichage des stocks de matériaux après la collecte
             printf("\n--- Stocks Restants de Matériaux ---\n");
             printf("Bois : %d, Pierres : %d, Feuilles : %d, Argiles : %d\n", stockMateriaux.bois, stockMateriaux.pierres, stockMateriaux.feuilles, stockMateriaux.argiles);
 
-            // Gérer les combats
+            // Activité 6 : Gérer les combats
+            printf("\n--- Activité 6 : Gestion des combats ---\n");
             lancerCombat(colonie, tailleColonie, &etatColonie, &stockNourriture); // Appel à la fonction de combat
 
-            // Consommation des ressources
+            // Activité 7 : Consommation des ressources
+            printf("\n--- Activité 7 : Consommation des ressources ---\n");
             consommationNourriture(colonie, tailleColonie, &stockNourriture);
 
-            // Gérer la reproduction
-            reproduction(colonie, &tailleColonie, &gestionreproduction, &stockNourriture, nbOeufs);
+            // Activité 8 : Gérer la reproduction
+            printf("\n--- Activité 8 : Gestion de la reproduction ---\n");
+            reproduction(colonie, &tailleColonie, &gestionreproduction, nbOeufs);
 
             // Afficher l'état des non-adultes après la reproduction
             afficherNonAdultes(&gestionreproduction);
 
-            // Consommer des ressources pour les non-adultes
+            // Activité 9 : Consommation des ressources pour les non-adultes
+            printf("\n--- Activité 9 : Consommation des ressources pour les non-adultes ---\n");
             consommationRessourcesNonAdultes(&gestionreproduction, &stockNourriture);
         }
 
@@ -92,7 +96,8 @@ int main() {
             break;  // Le 'break' doit être dans la boucle while
         }
 
-        // Passage au jour suivant
+        // Activité 10 : Passage au jour suivant
+        printf("\n--- Activité 10 : Passage au jour suivant ---\n");
         avancerJour(&climat);
     }
 
