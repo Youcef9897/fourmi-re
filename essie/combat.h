@@ -1,7 +1,7 @@
 #ifndef COMBAT_H
 #define COMBAT_H
 
-#include "FourmisColonie.h"
+#include "fourmis.h"
 #include "structures.h"
 
 // Initialisation des ennemis (prédateurs ou autres)
