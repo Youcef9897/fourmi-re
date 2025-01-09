@@ -34,17 +34,17 @@ void avancerJour(Climat *climat) {
         // Si une année complète (quatre saisons) a été parcourue, on incrémente le cycle.
         if (saisonIndex == 0) {  // Si la saison est de nouveau "Été", cela signifie qu'une année est passée.
             climat->cycle++;  // Incrémentation du cycle (nouvelle année).
-            printf("\nUn nouveau cycle commence après l'été ! Cycle actuel : %d\n", climat->cycle);  // Affichage du nouveau cycle.
+            printf("\n🌞 Un nouveau cycle commence après l'été ! Cycle actuel : %d 🌞\n", climat->cycle);  // Affichage du nouveau cycle.
         }
     }
 }
 
 // Fonction pour afficher le climat actuel.
 void afficherClimat(const Climat *climat) {
-    printf("\n--- Climat Actuel ---\n");
-    printf("Saison : %s\n", climat->saison);  // Affichage de la saison actuelle.
-    printf("Période : %s\n", climat->periode);  // Affichage de la période associée à la saison.
-    printf("Cycle : %d\n", climat->cycle);  // Affichage du cycle actuel (par exemple, l'année en cours).
-    printf("Jour Actuel : %d\n", climat->jourActuel);  // Affichage du jour actuel dans la saison.
+    printf("\n--- 🌍 Climat Actuel 🌍 ---\n");
+    printf("🌸 Saison : %s\n", climat->saison);  // Affichage de la saison actuelle.
+    printf("🕒 Période : %s\n", climat->periode);  // Affichage de la période associée à la saison.
+    printf("🔄 Cycle : %d\n", climat->cycle);  // Affichage du cycle actuel (par exemple, l'année en cours).
+    printf("📅 Jour Actuel : %d\n", climat->jourActuel);  // Affichage du jour actuel dans la saison.
     printf("-----------------------\n");
 }
