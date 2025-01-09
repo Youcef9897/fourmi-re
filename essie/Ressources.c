@@ -189,8 +189,9 @@ void consommationNourriture(Fourmi *colonie, int tailleColonie, StockNourriture 
 
         // Alerte si stock vide
         if (stockNourriture->sucre == 0 || stockNourriture->champignon == 0 || stockNourriture->feuille == 0 || stockNourriture->graine == 0) {
-            modifierEtAfficherAlerte(ALERTE_SONORE,"Un des stocks est vide");
+          modifierEtAfficherAlerte(ALERTE_SONORE, "⚠️ Un des stocks est vide 🔔");
         }
+
 
         // Affichage des stocks restants
         
