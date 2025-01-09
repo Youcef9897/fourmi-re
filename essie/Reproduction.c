@@ -1,7 +1,8 @@
 #include <stdio.h> // Inclusion de la bibliothèque standard d'entrée/sortie
 #include <stdlib.h> // Inclusion de la bibliothèque standard pour les fonctions utilitaires
-#include "FourmisColonie.h" // Inclusion du fichier d'en-tête pour la gestion de la colonie de fourmis
+#include "fourmis.h" // Inclusion du fichier d'en-tête pour la gestion de la colonie de fourmis
 #include "reproduction.h" // Inclusion du fichier d'en-tête pour la gestion de la reproduction
+#include <unistd.h>
 
 // Fonction pour gérer la reproduction dans la fourmilière
 void reproduction(Fourmi *colonie, int *tailleColonie, GestionReproduction *gestionRepgestionReproduction, int nbOeufs) {
@@ -20,42 +21,52 @@ void reproduction(Fourmi *colonie, int *tailleColonie, GestionReproduction *gest
     }
 
     // Faire évoluer les non-adultes (œufs, larves, nymphes)
-    evoluerNonAdultes(gestionRepgestionReproduction); // Appel de la fonction pour faire évoluer les non-adultes
+    
+    evoluerNonAdultes(colonie, tailleColonie, gestionRepgestionReproduction); // Appel de la fonction pour faire évoluer les non-adultes
 
     if (nbReines > 0 && nbMales > 0) { // Vérification s'il y a au moins une reine et un mâle
         affecterActivite(ZONE_CHAMBRE_ROYALE, "Les mâles se dirigent vers la chambre royale pour féconder la reine."); // Affectation de l'activité de reproduction
+        usleep(700000);
         printf("La reproduction a eu lieu ! 🐜👑\n"); // Affichage d'un message de reproduction
         nbOeufs = rand() % 10 + 5; // Génération aléatoire du nombre d'œufs pondus par la reine (entre 5 et 15)
         GestionReproduction *gestion = malloc(sizeof(GestionReproduction)); // Allocation dynamique de mémoire pour la gestion de la reproduction
         gestion->nboeufs += nbOeufs; // Ajout du nombre d'œufs pondus à la gestion de la reproduction
+        usleep(700000);
         printf("La reine a déposé %d œufs. 🥚\n", nbOeufs); // Affichage du nombre d'œufs pondus
         affecterActivite(ZONE_STOCKAGE_OEUFS, "Les nourrices recollectent et transportent des œufs vers la zone de stockage.");
     } else {
+        usleep(700000);
         printf("Pas de reproduction : Il faut une reine et des mâles actifs. 🚫👑♂️\n"); // Affichage d'un message indiquant l'absence de reproduction
     }
     gestionRepgestionReproduction->nboeufs += nbOeufs; // Mise à jour du nombre d'œufs dans la gestion de la reproduction
+    usleep(700000);
     printf("Nombre d'œufs : %d 🥚\n", gestionRepgestionReproduction->nboeufs); // Affichage du nombre total d'œufs
 
 }
 
 // Fonction pour faire évoluer les non-adultes (œufs -> larves -> nymphes -> adultes)
-void evoluerNonAdultes(GestionReproduction *gestionRepgestionReproduction) {
+void evoluerNonAdultes(Fourmi *colonie, int *tailleColonie, GestionReproduction *gestionRepgestionReproduction)
+{
     int temp = 0; // Initialisation d'une variable temporaire
     if (gestionRepgestionReproduction->nboeufs > 0) { // Vérification s'il y a des œufs
         temp = gestionRepgestionReproduction->nblarves; // Stockage du nombre de larves actuel
         gestionRepgestionReproduction->nblarves = gestionRepgestionReproduction->nboeufs; // Les œufs deviennent des larves
+        usleep(700000);
         printf("%d œufs sont devenus des larves. 🥚➡️🪱\n", gestionRepgestionReproduction->nboeufs); // Affichage du nombre d'œufs devenus des larves
         gestionRepgestionReproduction->nboeufs = 0; // Réinitialisation du nombre d'œufs
+        usleep(700000);
         printf("Un œuf est devenu une larve. 🥚➡️🪱\n"); // Affichage d'un message indiquant qu'un œuf est devenu une larve
         
     } else if (gestionRepgestionReproduction->nblarves > 0) { // Vérification s'il y a des larves
         gestionRepgestionReproduction->nbnymphes = gestionRepgestionReproduction->nblarves; // Les larves deviennent des nymphes
         gestionRepgestionReproduction->nblarves = 0; // Réinitialisation du nombre de larves
+        usleep(700000);
         printf("Une larve est devenue une nymphe. 🪱➡️🦋\n"); // Affichage d'un message indiquant qu'une larve est devenue une nymphe
     }
     if (gestionRepgestionReproduction->nbnymphes > 0) { // Vérification s'il y a des nymphes
         gestionRepgestionReproduction->nbnymphes--; // Une nymphe devient une fourmi adulte
     }
+    usleep(700000);
     printf("Une nymphe est devenue une fourmi adulte. 🦋➡️🐜\n"); // Affichage d'un message indiquant qu'une nymphe est devenue une fourmi adulte
     if (gestionRepgestionReproduction->nblarves > 0) { // Vérification s'il y a des larves
         gestionRepgestionReproduction->nbnymphes = temp; // Mise à jour du nombre de nymphes avec la valeur temporaire
@@ -64,9 +75,13 @@ void evoluerNonAdultes(GestionReproduction *gestionRepgestionReproduction) {
 
 // Fonction pour afficher les états des non-adultes (œufs, larves, nymphes)
 void afficherNonAdultes(GestionReproduction *gestionRepgestionReproduction) {
+    usleep(700000);
     printf("État des non-adultes:\n"); // Affichage de l'état des non-adultes
+    usleep(700000);
     printf(" - Œufs 🥚: %d\n", gestionRepgestionReproduction->nboeufs); // Affichage du nombre d'œufs
+    usleep(700000);
     printf(" - Larves 🪱: %d\n", gestionRepgestionReproduction->nblarves); // Affichage du nombre de larves
+    usleep(700000);
     printf(" - Nymphes 🦋: %d\n", gestionRepgestionReproduction->nbnymphes); // Affichage du nombre de nymphes
 }
    
@@ -84,8 +99,10 @@ void consommationRessourcesNonAdultes(GestionReproduction *gestionRepgestionRepr
             affecterActivite(ZONE_STOCKAGE_OEUFS, "Les nourrices se dirigent vers les œufs pour commencer à les nourrir."); // Affectation de l'activité de nourrissage
             activiteAffectee = 1; // Marquer l'activité comme affectée
         }
+        usleep(700000);
         printf("Les non-adultes ont consommé %.2f unités de sucre. 🍬 Il reste %.2f unités de sucre.\n", totalConsommation, stockNourriture->sucre); // Affichage de la consommation et des ressources restantes
     } else {
+        usleep(700000);
         printf("Pas assez de sucre pour nourrir les non-adultes. 🚫🍬 Consommation nécessaire : %.2f, sucre disponible : %.2f.\n", totalConsommation, stockNourriture->sucre); // Affichage d'un message indiquant le manque de ressources
     }
 }
