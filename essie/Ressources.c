@@ -198,8 +198,9 @@ void consommationNourriture(Fourmi *colonie, int tailleColonie, StockNourriture 
         printf("\n--- Stocks Restants de Nourriture ---\n");
         
         usleep(700000);
-        printf("Sucre : %.1f, Champignons : %.1f, Protéines : %.1f, Graines : %.1f\n",
-               stockNourriture->sucre, stockNourriture->champignon, stockNourriture->feuille, stockNourriture->graine);
+        printf("🍬 Sucre : %.1f, 🍄 Champignons : %.1f, 🍗 Protéines : %.1f, 🌱 Graines : %.1f\n",
+       stockNourriture->sucre, stockNourriture->champignon, stockNourriture->feuille, stockNourriture->graine);
+
     } else {
         
         usleep(700000);
