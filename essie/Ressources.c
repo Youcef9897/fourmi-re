@@ -122,13 +122,13 @@ void consommationNourriture(Fourmi *colonie, int tailleColonie, StockNourriture 
 
     // Affichage de la consommation par type de fourmi
     printf("\n--- Consommation de Nourriture par Type de Fourmi ---\n");
-    printf("Reine : %.1f\n", consommation.consommationreine);
-    printf("Mâles : %.1f\n", consommation.consommationmales);
-    printf("Nourrices : %.1f\n", consommation.consommationnourrices);
-    printf("Nettoyeuses : %.1f\n", consommation.consommationnettoyeuses);
-    printf("Architectes : %.1f\n", consommation.consommationarchitectes);
-    printf("Butineuses : %.1f\n", consommation.consommationbutineuses);
-    printf("Soldats : %.1f\n", consommation.consommationsoldats);
+    printf("Reine 👑: %.1f\n", consommation.consommationreine);
+    printf("Mâles ♂️: %.1f\n", consommation.consommationmales);
+    printf("Nourrices 🍼: %.1f\n", consommation.consommationnourrices);
+    printf("Nettoyeuses 🧹: %.1f\n", consommation.consommationnettoyeuses);
+    printf("Architectes 🏗️: %.1f\n", consommation.consommationarchitectes);
+    printf("Butineuses 🍯: %.1f\n", consommation.consommationbutineuses);
+    printf("Soldats 🛡️: %.1f\n", consommation.consommationsoldats);
 
     // Mise à jour des stocks de nourriture
     float consommationTotale = consommation.consommationreine + consommation.consommationmales + consommation.consommationnourrices + 
