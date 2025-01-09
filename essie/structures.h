@@ -1,89 +1,67 @@
 #ifndef STRUCTURES_H
 #define STRUCTURES_H
-#include <stdbool.h>
 
+// Définition des types de fourmis
 typedef enum {
-    ZONE_MONDE_EXTERNE = 0,
-    ZONE_ENTREE_PRINCIPALE,
-    ZONE_STOCKAGE_NOURRITURE,
-    ZONE_DEFENSE_COLONIE,
-    ZONE_CHAMBRE_ROYALE,
-    ZONE_STOCKAGE_OEUFS,
-    ZONE_CIMETIERE
+    REINE,         // Fourmi reine
+    MALE,          // Fourmi mâle
+    SOLDAT,        // Fourmi soldat
+    ARCHITECTE,    // Fourmi architecte
+    NETTOYEUSE,    // Fourmi nettoyeuse
+    BUTINEUSE,     // Fourmi butineuse
+    NOURRICE,      // Fourmi nourrice
+} TypeFourmi;
+
+// Structure représentant une fourmi
+typedef struct {
+    TypeFourmi type; // Type de fourmi
+    int age;         // Âge de la fourmi
+    int statut;      // Statut numérique (exemple : 0=Oeuf, 1=Larve, 2=Nymphe, 3=Adulte, 4=Mort)
+    int pv;          // Points de vie de la fourmi
+} Fourmi;
+
+// ------------------------------------
+
+// Définition du climat et des saisons
+typedef struct {
+    int jourActuel;  // Jour actuel dans le cycle
+    int cycle;       // Cycle actuel
+    char saison[10]; // Saison actuelle
+    char periode[20];// Période actuelle de la saison
+} Climat;
+
+// Structure représentant une colonie de fourmis
+typedef struct {
+    int PvColonie;         // Points de vie de la colonie
+    int nbTotalFourmis;    // Nombre total de fourmis dans la colonie
+} Colonie;
+
+// ------------------------------------
+
+// Zones de la fourmilière
+typedef enum {
+    ZONE_MONDE_EXTERNE = 0,      // Monde extérieur
+    ZONE_ENTREE_PRINCIPALE,      // Entrée principale de la fourmilière
+    ZONE_STOCKAGE_NOURRITURE,    // Zone de stockage de la nourriture
+    ZONE_DEFENSE_COLONIE,        // Zone de défense de la colonie
+    ZONE_CHAMBRE_ROYALE,         // Chambre royale
+    ZONE_STOCKAGE_OEUFS,         // Zone de stockage des œufs
+    ZONE_CIMETIERE               // Cimetière
 } ZoneFourmiliere;
 
+// Structure représentant une activité dans une zone
 typedef struct {
     ZoneFourmiliere zone;         // Zone actuelle
     char description[100];        // Description de l'activité
 } Activite;
 
-
-
-typedef struct {
-    int nboeufs;       // Nombre d'œufs
-    int nblarves;      // Nombre de larves
-    int nbnymphes;     // Nombre de nymphes
-    float consommationParJour; // Total de consommation par jour
-} GestionNonAdultes;
-
-typedef enum {
-    REINE,
-    SOLDAT,
-    MALE,
-    ARCHITECTES,
-    NETTOYEUSES,
-    BOUTINEUSES,
-    NOURRICE,
-} TypeFourmi;
-
-typedef struct {
-    TypeFourmi type; // Type de fourmi
-    int age;
-    int statut; // Statut numérique (exemple : 0=Oeuf, 1=Larve, etc.)
-    int pv;
-} Fourmi;
-
-typedef struct {
-    int jourActuel;
-    int cycle;        // Cycle actuel
-    char saison[10];
-    char periode[20];
-} Climat;
-
-typedef struct {
-    int bois, pierres, feuilles, argiles;
-} StockMateriaux;
-
-typedef struct {
-    float sucre, champignons, proteines, graines;
-} StockNourriture;      
-
-typedef struct {
-    float reine;
-    float males;
-    float nourrices;
-    float nettoyeuses;
-    float architectes;
-    float butineuses;
-    float soldats;
-    float nonAdultes;
-} GestionConsommation;
-
-typedef struct {
-    int nbSoldats;
-    int niveauAlerte;  // 0: Normal, 1: Élevé, 2: Critique
-    int nbEnnemisDetectes;
-    int combatsEnCours;
-    int otagesCaptures;
-    int PVcolonie;
-} Securite;
-
+// Alertes et Communication dans la fourmilière
 typedef enum {
     ALERTE_ODEUR = 0,        // Alerte si une odeur est détectée
     ALERTE_VERIF_VISUELLE,   // Alerte pour la vérification visuelle des fourmis
     ALERTE_SONORE,           // Alerte sonore si le stockage de nourriture est vide
-    ALERTE_GUIDAGE_TACTILE,   // Alerte pour guider une ouvrière à une zone spécifique
-    NB_ALERTES                // Nombre total d'alertes
+    ALERTE_GUIDAGE_TACTILE,  // Alerte pour guider une ouvrière à une zone spécifique
+    NB_ALERTES               // Nombre total d'alertes
 } Alerte;
 
 // Structure pour associer chaque alerte à une description
@@ -92,10 +70,60 @@ typedef struct {
     char description[256];    // Description associée à l'alerte
 } AlerteDescription;
 
+// ------------------------------------
 
+// Stockage des matériaux
 typedef struct {
-    int population[4]; // [Œufs, Larves, Nymphes, Adultes]
-    float nourritureParStade[4]; // Consommation de nourriture par stade
-} Elevage;
+    int bois;      // Quantité de bois
+    int pierres;   // Quantité de pierres
+    int feuilles;  // Quantité de feuilles
+    int argiles;   // Quantité d'argiles
+} StockMateriaux;
+
+// ------------------------------------
+
+// Stockage de la nourriture
+typedef struct {
+    float sucre;         // Quantité de sucre
+    float champignon;   // Quantité de champignons
+    float feuille;     // Quantité de protéines
+    float graine;       // Quantité de graines
+} StockNourriture;
+
+// ------------------------------------
+
+// Gestion de la consommation des fourmis
+typedef struct {
+    float consommationreine;        // Consommation de la reine
+    float consommationmales;        // Consommation des mâles
+    float consommationnourrices;    // Consommation des nourrices
+    float consommationnettoyeuses;  // Consommation des nettoyeuses
+    float consommationarchitectes;  // Consommation des architectes
+    float consommationbutineuses;   // Consommation des butineuses
+    float consommationsoldats;      // Consommation des soldats
+} GestionConsommation;
+
+// ------------------------------------
+
+// Gestion de la reproduction
+typedef struct {
+    int nboeufs;                // Nombre d'œufs
+    int nblarves;               // Nombre de larves
+    int nbnymphes;              // Nombre de nymphes
+    float consommationParJour;  // Total de consommation par jour
+} GestionReproduction;
+
+
+// Structure représentant un ennemi prédateur
+typedef struct {
+    int pv;                // Points de vie du prédateur
+    int degats;            // Dégâts du prédateur
+    TypeFourmi type;       // Type de l'ennemi 
+                           // les prédateurs comme : Mammifères, Reptiles, Araignées, Oiseaux
+                           // les Guêpes, les Mouches parasites, Fourmis guerrières d'autres espèces comme : légionnaires, sahariennes, etc. 
+} EnnemiPredateur;
+
+// ------------------------------------
+
 
 #endif // STRUCTURES_H
