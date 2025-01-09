@@ -16,12 +16,11 @@ static char alertesDescriptions[NB_ALERTES][200]; // Tableau pour stocker les de
 const char *roles[] = {"Reine", "Mâle", "Soldat", "Architecte", "Nettoyeuse", "Butineuse", "Nourrice"};
 const int pvFourmis[] = {300, 100, 120, 120, 120, 120, 120}; // PV des fourmis par type
 
-
 // Fonction pour afficher l'état de la colonie
 void afficherEtatColonie(Colonie *colonie) {
     printf("\n--- État de la colonie ---\n");
-    printf("Points de vie de la colonie : %d\n", colonie->PvColonie); // Affiche les points de vie de la colonie
-    printf("Nombre total de fourmis : %d\n", colonie->nbTotalFourmis); // Affiche le nombre total de fourmis
+    printf("Points de vie de la colonie : %d ❤️\n", colonie->PvColonie); // Affiche les points de vie de la colonie
+    printf("Nombre total de fourmis : %d 🐜\n", colonie->nbTotalFourmis); // Affiche le nombre total de fourmis
 }
 
 // Fonction pour initialiser les descriptions des zones
@@ -60,7 +59,7 @@ void initialiserFourmis(Fourmi *colonie, int *index, TypeFourmi type, int nbFour
         if (colonie[*index].age < 10) {
             colonie[*index].statut = 0;  // Œuf
         } else if (colonie[*index].age < 20) {
-            colonie[*index].statut = 1;  // Lave
+            colonie[*index].statut = 1;  // Larve
         } else if (colonie[*index].age < 30) {
             colonie[*index].statut = 2;  // Nymphe
         } else {
@@ -115,7 +114,7 @@ void genererColonie(Fourmi *colonie, int *tailleColonie, Colonie *etatColonie) {
 void afficherFourmi(Fourmi fourmi) {
     if (fourmi.statut != 4) { // Ignorer les mortes
         // Affiche les informations d'une fourmi : rôle, âge, statut et PV
-        printf("Rôle: %s, Âge: %d jours, Statut: %d, PV: %d\n", roles[fourmi.type], fourmi.age, fourmi.statut, fourmi.pv);
+        printf("🐜 Rôle: %s, Âge: %d jours, Statut: %d, PV: %d\n", roles[fourmi.type], fourmi.age, fourmi.statut, fourmi.pv);
     }
 }
 
@@ -125,7 +124,7 @@ void gererLesMortsEtVieillirFourmis(Fourmi *colonie, int *tailleColonie, Climat 
     while (i < *tailleColonie) {
         // Vérifie si la fourmi est morte ou a des PV inférieurs ou égaux à 0
         if (colonie[i].statut == 4 || colonie[i].pv <= 0) {
-            printf("Fourmi [%s] âgée de %d jours est morte.\n", roles[colonie[i].type], colonie[i].age);
+            printf("Fourmi [%s] âgée de %d jours est morte. 💀\n", roles[colonie[i].type], colonie[i].age);
             for (int j = i; j < *tailleColonie - 1; j++) {
                 colonie[j] = colonie[j + 1]; // Retirer la fourmi morte
             }
@@ -145,7 +144,7 @@ void gererLesMortsEtVieillirFourmis(Fourmi *colonie, int *tailleColonie, Climat 
         if (colonie[i].statut != 4) { total++; } // Ignorer les mortes
     }
     etatColonie->nbTotalFourmis = total;
-    printf("\nNombre total de fourmis mis à jour : %d\n", total);
+    printf("\nNombre total de fourmis mis à jour : %d 🐜\n", total);
 }
 
 // Fonction pour initialiser les alertes et la communication entre les fourmis
@@ -164,6 +163,6 @@ void modifierEtAfficherAlerte(Alerte alerte, const char* description) {
             strcpy(alertesDescriptions[alerte], description); // Mise à jour de la description de l'alerte
         }
         // Affiche l'alerte (modifiée ou non)
-        printf("\nAlerte (%d) : %s\n", alerte, alertesDescriptions[alerte]);
+        printf("\nAlerte (%d) : %s 🚨\n", alerte, alertesDescriptions[alerte]);
     }
 }
