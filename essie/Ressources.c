@@ -4,8 +4,9 @@
 #include <stdbool.h> // Inclusion de la bibliothèque pour les types booléens
 #include <time.h> // Inclusion de la bibliothèque pour les fonctions de manipulation du temps
 #include "structures.h" // Inclusion du fichier d'en-tête pour les structures de données
-#include "Ressources.h" // Inclusion du fichier d'en-tête pour les ressources
-#include "FourmisColonie.h" // Inclusion du fichier d'en-tête pour les fourmis et la colonie
+#include "nourriture.h" // Inclusion du fichier d'en-tête pour les ressources
+#include "fourmis.h" // Inclusion du fichier d'en-tête pour les fourmis et la colonie
+#include <unistd.h>
 
 #define CONSOMMATION_PAR_FOURMI 1.0 // Chaque fourmi adulte consomme 1 unité par jour
 
@@ -13,6 +14,8 @@
 void collecteNourriture(Fourmi *colonie, int taille, StockNourriture *stockNourriture, const char *saison) {
     // Vérifie si la saison est Été ou Printemps pour permettre la collecte
     if (strcmp(saison, "Été") != 0 && strcmp(saison, "Printemps") != 0) {
+        
+        usleep(700000);
         printf("Aucune collecte en Automne ou Hiver.\n");
         return;
     }
@@ -27,11 +30,14 @@ void collecteNourriture(Fourmi *colonie, int taille, StockNourriture *stockNourr
 
     // Vérifie s'il y a des butineuses actives disponibles
     if (boutineusesActives == 0) {
+        
+        usleep(700000);
         printf("Pas de BOUTINEUSES actives disponibles pour la collecte.\n");
         return;
     }
 
     // Zone de collecte - Les butineuses explorent le monde extérieur à la recherche de Nourriture
+    
     affecterActivite(ZONE_MONDE_EXTERNE, "Les BOUTINEUSES explorent le monde extérieur à la recherche de Nourriture.");
 
     // Collecte de Nourriture
@@ -41,8 +47,13 @@ void collecteNourriture(Fourmi *colonie, int taille, StockNourriture *stockNourr
     stockNourriture->feuille += boutineusesActives * 1; // Ajoute des protéines au stock
 
     // Zone de retour - Les butineuses reviennent avec la nourriture
+    
     affecterActivite(ZONE_ENTREE_PRINCIPALE, "Les BOUTINEUSES reviennent avec les Nourriture.");
+    
+    usleep(700000);
     printf("\n--- Collecte Terminée ---\n");
+    
+    usleep(700000);
     printf("Sucres🍬: %.1f, Champignons🍄: %.1f, Feuilles🍃: %.1f, Graines🌱: %.1f\n",
            stockNourriture->sucre, stockNourriture->champignon, stockNourriture->feuille, stockNourriture->graine);
 }
@@ -59,11 +70,14 @@ void collecteMateriaux(Fourmi *colonie, int taille, StockMateriaux *stockMateria
 
     // Vérifie s'il y a des architectes actifs disponibles
     if (architectesActifs == 0) {
+        
+        usleep(700000);
         printf("Pas d'ARCHITECTES actifs disponibles pour la collecte.\n");
         return;
     }
 
     // Zone de collecte - Les architectes collectent des matériaux
+    
     affecterActivite(ZONE_MONDE_EXTERNE, "Les ARCHITECTES collectent activement des matériaux pour la colonie.");
 
     srand(time(NULL)); // Initialisation du générateur de nombres aléatoires
@@ -78,13 +92,20 @@ void collecteMateriaux(Fourmi *colonie, int taille, StockMateriaux *stockMateria
     }
 
     // Zone de retour - Les architectes reviennent avec les matériaux collectés
+    
     affecterActivite(ZONE_ENTREE_PRINCIPALE, "Les ARCHITECTES reviennent à la colonie avec les matériaux collectés.");
+    
+    usleep(700000);
     printf("\n--- Collecte de Matériaux Terminée ---\n");
+    
+    usleep(700000);
     printf("Bois : %d, Pierres : %d, Feuilles : %d, Argiles : %d\n",
            stockMateriaux->bois, stockMateriaux->pierres, stockMateriaux->feuilles, stockMateriaux->argiles);
 
     // Vérification et réparation de la colonie si nécessaire
     if (etatColonie->PvColonie < 1000) {
+        
+        usleep(700000);
         printf("\n--- Réparation de la Colonie ---\n");
         while (etatColonie->PvColonie < 1000) {
             // Réparation de la colonie en utilisant les matériaux disponibles
@@ -92,7 +113,9 @@ void collecteMateriaux(Fourmi *colonie, int taille, StockMateriaux *stockMateria
             else if (stockMateriaux->pierres >= 10) { stockMateriaux->pierres -= 10; etatColonie->PvColonie += 10; }
             else if (stockMateriaux->feuilles >= 10) { stockMateriaux->feuilles -= 10; etatColonie->PvColonie += 10; }
             else if (stockMateriaux->argiles >= 10) { stockMateriaux->argiles -= 10; etatColonie->PvColonie += 10; }
-            else { printf("Matériaux insuffisants pour continuer les réparations. PV actuels : %d\n", etatColonie->PvColonie); break; }
+            else { usleep(700000);
+            printf("Matériaux insuffisants pour continuer les réparations. PV actuels : %d\n", etatColonie->PvColonie); break; }
+            usleep(700000);
             printf("Réparation en cours... PV actuels : %d\n", etatColonie->PvColonie);
         }
     }
@@ -121,13 +144,29 @@ void consommationNourriture(Fourmi *colonie, int tailleColonie, StockNourriture 
     }
 
     // Affichage de la consommation par type de fourmi
+    
+    usleep(700000);
     printf("\n--- Consommation de Nourriture par Type de Fourmi ---\n");
+    
+    usleep(700000);
     printf("Reine 👑: %.1f\n", consommation.consommationreine);
+    
+    usleep(700000);
     printf("Mâles ♂️: %.1f\n", consommation.consommationmales);
+    
+    usleep(700000);
     printf("Nourrices 🍼: %.1f\n", consommation.consommationnourrices);
+    
+    usleep(700000);
     printf("Nettoyeuses 🧹: %.1f\n", consommation.consommationnettoyeuses);
+    
+    usleep(700000);
     printf("Architectes 🏗️: %.1f\n", consommation.consommationarchitectes);
+    
+    usleep(700000);
     printf("Butineuses 🍯: %.1f\n", consommation.consommationbutineuses);
+    
+    usleep(700000);
     printf("Soldats 🛡️: %.1f\n", consommation.consommationsoldats);
 
     // Mise à jour des stocks de nourriture
@@ -154,13 +193,20 @@ void consommationNourriture(Fourmi *colonie, int tailleColonie, StockNourriture 
         }
 
         // Affichage des stocks restants
+        
+        usleep(700000);
         printf("\n--- Stocks Restants de Nourriture ---\n");
+        
+        usleep(700000);
         printf("Sucre : %.1f, Champignons : %.1f, Protéines : %.1f, Graines : %.1f\n",
                stockNourriture->sucre, stockNourriture->champignon, stockNourriture->feuille, stockNourriture->graine);
     } else {
+        
+        usleep(700000);
         printf("\nAucune consommation aujourd'hui.\n");
     }
 
     // Zone de fin de consommation - Les fourmis ont terminé leur consommation
+    
     affecterActivite(ZONE_STOCKAGE_NOURRITURE, "Les fourmis ont terminé leur consommation.");
 }
