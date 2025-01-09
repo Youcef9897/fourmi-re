@@ -1,6 +1,7 @@
 #include <stdio.h> // Inclusion de la bibliothèque standard d'entrée/sortie
 #include <stdlib.h> // Inclusion de la bibliothèque standard pour les fonctions utilitaires
 #include "combat.h" // Inclusion du fichier d'en-tête combat.h
+#include <unistd.h> // Pour la fonction usleep
 #include "FourmisColonie.h" // Inclusion du fichier d'en-tête FourmisColonie.h
 
 // Fonction générique pour initialiser un ennemi (fourmi ennemie ou prédateur)
@@ -29,6 +30,7 @@ void initialiserEnnemi(void *ennemi, int isPredateur) {
 
 // Fonction de combat
 void combat(void *ennemi, Fourmi *soldat, Colonie *etatColonie, StockNourriture *stockNourriture, int isPredateur) {
+
     printf("\n--- Début du combat ---\n"); // Début du combat
 
     if (isPredateur) {
