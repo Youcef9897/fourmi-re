@@ -1,5 +1,5 @@
-#ifndef FOURMISCOLONIE_H
-#define FOURMISCOLONIE_H
+#ifndef FOURMIS_H
+#define FOURMIS_H
 
 #include "structures.h" // Inclusion du fichier d'en-tête contenant les structures utilisées
 
