@@ -99,8 +99,8 @@ void collecteMateriaux(Fourmi *colonie, int taille, StockMateriaux *stockMateria
     printf("\n--- Collecte de Matériaux Terminée ---\n");
     
     usleep(700000);
-    printf("Bois : %d, Pierres : %d, Feuilles : %d, Argiles : %d\n",
-           stockMateriaux->bois, stockMateriaux->pierres, stockMateriaux->feuilles, stockMateriaux->argiles);
+    printf("🌳 Bois : %d, 🪨 Pierres : %d, 🍃 Feuilles : %d, 🧱 Argiles : %d\n",
+       stockMateriaux->bois, stockMateriaux->pierres, stockMateriaux->feuilles, stockMateriaux->argiles);
 
     // Vérification et réparation de la colonie si nécessaire
     if (etatColonie->PvColonie < 1000) {
