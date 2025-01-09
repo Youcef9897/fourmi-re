@@ -43,7 +43,7 @@ void collecteNourriture(Fourmi *colonie, int taille, StockNourriture *stockNourr
     // Zone de retour - Les butineuses reviennent avec la nourriture
     affecterActivite(ZONE_ENTREE_PRINCIPALE, "Les BOUTINEUSES reviennent avec les Nourriture.");
     printf("\n--- Collecte Terminée ---\n");
-    printf("Sucres : %.1f, Champignons : %.1f, Feuilles : %.1f, Graines : %.1f\n",
+    printf("Sucres🍬: %.1f, Champignons🍄: %.1f, Feuilles🍃: %.1f, Graines🌱: %.1f\n",
            stockNourriture->sucre, stockNourriture->champignon, stockNourriture->feuille, stockNourriture->graine);
 }
 
